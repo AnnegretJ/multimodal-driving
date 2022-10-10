@@ -1,0 +1,20 @@
+﻿Filename;Question;Answer A;Correctness A;Answer B;Correctness B;Answer C;Correctness C
+videos/Yqe62JAmjMI_7_31.mp4;Worauf müssen Sie beim Einbiegen nach rechts achten?;Auf das Motorrad;TRUE;Auf den Transporter;FALSE;Auf von links kommende Fahrzeuge;TRUE
+videos/Yqe62JAmjMI_30_21.5.mp4;Warum müssen Sie weiterhin bremsen? Wegen des;Radfahrers;FALSE;Müllfahrzeugs;TRUE;blauen Lkws;TRUE
+videos/Yqe62JAmjMI_31_21.mp4;Müssen Sie hier langsam und bremsbereit fahren?;Ja, da der Bus sofort anfahren wird;FALSE;Ja, da Fahrgäste vor dem Bus die Fahrbahn überqueren könnten;TRUE;Ja, da Personen, die nicht aus dem Bus kommen, die Fahrbahn überqueren können;TRUE
+videos/Yqe62JAmjMI_38_13.mp4;Wie verhalten Sie sich?;Vor dem Linksabbiegen warten und den Bereich der Mittelinsel frei halten;TRUE;Flüssig abbiegen, um die Nachfolgenden nicht zu behindern;FALSE;Zunächst im Bereich der Mittelinsel warten, wo der andere Pkw steht;FALSE
+videos/Yqe62JAmjMI_43_21.5.mp4;Warum müssen Sie hier verzögert und Bremsbereit sein? Wegen des;Radfahrers;TRUE;Fußgängers;FALSE;roten Fahrzeuges;FALSE
+videos/Yqe62JAmjMI_53_50.5.mp4;Wie verhalten Sie sich?;Weiterfahren;TRUE;Abbremsen;FALSE;None;None
+videos/Yqe62JAmjMI_59_08.5.mp4;Weshalb müssen Sie hier warten?;Wegen des grünen Pkws;FALSE;Wegen der Radfahrerin;TRUE;Wegen des Fußgängers;FALSE
+videos/9xY9S3LV69k_9_45.5.mp4;Wie verhalten Sie sich richtig?;Ich verringere die Geschwindigkeit;TRUE;Ich beschleunige;FALSE;Ich behalte die Geschwindigkeit bei;FALSE
+videos/9xY9S3LV69k_12_29.mp4;Wie verhalten Sie sich in dieser Situation?;Ich überhole den Radfahrer;FALSE;Ich hupe, damit der Radfahrer Platz macht;FALSE;Ich bleibe hinter dem Radfahrer;TRUE
+videos/9xY9S3LV69k_21_40.mp4;Was müssen Sie beachten?;Ich darf am Bus mit Schrittgeschwindigkeit vorbeifahren;TRUE;Personen könnten die Fahrbahn überqueren;TRUE;Ich darf am Bus nicht vorbeifahren;FALSE
+videos/9xY9S3LV69k_26_29.mp4;Wie verhalten Sie sich richtig? Ich überhole den Radfahrer;vor Erreichen des Lkws;FALSE;zwischen Lkw und Kurve;FALSE;nach der Kurve;TRUE
+videos/GYhPr8RyvZU_3_03.5.mp4;Wie verhalten Sie sich richtig?;Ich warte vor dem Hindernis;TRUE;Ich verzögere weiter;TRUE;Ich wechsle jetzt nach links;FALSE
+videos/GYhPr8RyvZU_14_00.5.mp4;Warum müssen Sie hier verzögern?;Weil maximal 80 km/h erlaubt sind;FALSE;Wegen des Traktors;FALSE;Wegen des überholenden Pkws;TRUE
+videos/GYhPr8RyvZU_16_34.mp4;Sie möchten geradeaus weiterfahren. Wie sollten Sie sich verhalten?;Ich wechsle erst unmittelbar vor der Fahrbahnverengung den Fahrstreifen;TRUE;Ich ordne mich jetzt rechts ein;FALSE;None;None
+videos/GYhPr8RyvZU_19_37.5.mp4;Wodurch kann diese Situation gefährlich werden?;Durch Gegenverkehr;TRUE;Durch den roten Pkw;TRUE;Durch den Traktor;FALSE
+videos/GYhPr8RyvZU_21_32.mp4;Warum sollten Sie hier besonders langsam fahren? Weil;der Lkw die Fahrspur verengt;TRUE;ich mich einer Ampelkreuzung nähere;FALSE;Personen die Fahrbahn betreten;TRUE
+videos/GYhPr8RyvZU_23_14.mp4;Worauf müssen Sie sich einstellen?;Der Bus schwenkt beim Auffahren auf meine Fahrbahnseite;TRUE;Entgegenkommende Fahrzeuge weichen auf meine Fahrbahnseite aus;TRUE;Fahrgäste laufen vor dem Bus auf die Fahrbahn;FALSE
+videos/GYhPr8RyvZU_1_03_56.5.mp4;Wie sollten Sie sich jetzt verhalten?;Ich weiche nach links aus;FALSE;Ich hupe;TRUE;Ich führe eine Gefahrenbremsung durch;TRUE
+videos/GYhPr8RyvZU_1_07_02.mp4;Worauf müssen Sie jetzt achten?;Auf den vorausfahrenden Pkw;TRUE;Auf das Fahrrad;TRUE;Auf das Motorrad;FALSE

@@ -1,0 +1,3 @@
+[submodule "opends"]
+	path = opends
+	url = https://bitbucket.org/rafaelmath/opends/src/master/

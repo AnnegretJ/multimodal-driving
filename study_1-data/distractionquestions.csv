@@ -1,0 +1,17 @@
+Filename Auditory;Filename Visual;Question;Answer A;Correctness A;Answer B;Correctness B;Answer C;Correctness C;
+distraction_audio/wetter_heute.mp3;distraction_video/wetter_heute.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;TRUE;Morgen;FALSE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_morgen.mp3;distraction_video/wetter_morgen.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;FALSE;Morgen;TRUE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_sonne.mp3;distraction_video/wetter_sonne.mp4;Was für ein Wetter wurde vorhergesagt?;Sonne;TRUE;Regen;FALSE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_regen.mp3;distraction_video/wetter_regen.mp4;Was für ein Wetter wurde vorhergesagt?;Sonne;FALSE;Regen;TRUE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_warnung.mp3;distraction_video/wetter_warnung.mp4;Gibt es eine Wetterwarnung?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_keine_warnung.mp3;distraction_video/wetter_keine_warnung.mp4;Gibt es eine Wetterwarnung?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_ueber_20.mp3;;Wird die Temperatur über 20°C?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE;
+distraction_audio/wetter_unter_20.mp3;;Wird die Temperatur über 20°C?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE;
+distraction_audio/restaurant_italienisch.mp3;;Welche Art von Restaurant wurde vorgeschlagen?;Italienisch;TRUE;Griechisch;FALSE;Weiß ich nicht;FALSE;
+distraction_audio/restaurant_griechisch.mp3;;Welche Art von Restaurant wurde vorgeschlagen?;Italienisch;FALSE;Griechisch;TRUE;Weiß ich nicht;FALSE;
+distraction_audio/restaurant_frühstück.mp3;;Zu welcher Mahlzeit wurde ein Besuch im Restaurant vorgeschlagen?;Frühstück;TRUE;Mittagessen;FALSE;Weiß ich nicht;FALSE;
+;;Zu welcher Mahlzeit wurde ein Besuch im Restaurant vorgeschlagen?;Frühstück;FALSE;Mittagessen;TRUE;Weiß ich nicht;FALSE;
+;;Kann man in dem Restaurant mit Karte zahlen?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE;
+distraction_audio/restaurant_keine_karte.mp3;;Kann man in dem Restaurant mit Karte zahlen?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE;
+;;Gibt es vegetarische Gerichte in dem Restaurant?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE;
+;;Gibt es vegetarische Gerichte in dem Restaurant?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE;

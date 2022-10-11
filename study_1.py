@@ -1,12 +1,14 @@
 import streamlit as st
-import os
 import sys
 import sqlite3
 import random
 import time
 import pandas as pd
+from playsound import playsound as ps
+import numpy as np
+import cv2
 
-# TODO distraction activation, testing
+# TODO data gathering, testing
 
 connection = sqlite3.connect("results.db") # databench for collected data
 cursor = connection.cursor()
@@ -28,7 +30,7 @@ filepath = "study_1-data/"
 exam_questions = pd.read_csv(filepath+"videoquestions.csv",header=1)
 distraction_questions = pd.read_csv(filepath+"distractionquestions.csv",header=1)
 current_results = []
-condition = sys.argv[-1] # write condition when calling the file (auditory, visual, audivisual)
+condition = sys.argv[-1] # write condition when calling the file (auditory, visual, audiovisual)
 order = random(exam_questions.iterrows()) # randomize order of questions
 distraction_order = random(distraction_questions.iterrows())
 # maybe take distraction-determination out of this file and do separately, mirror participant-screen and start distraction when participant clicks "play"
@@ -45,6 +47,8 @@ for index,row in order:
     q_results["Question"] = row["Question"]
     if condition_value:
         q_results["Condition"] = condition
+        q_results["ConditionFileAuditory"] = distraction_order[0][1]["Filename Auditory"]
+        q_results["ConditionFileVisual"] = distraction_order[0][1]["Filename Visual"]
         q_results["ConditionQuestion"] = distraction_order[0][1]["Question"]
     else:
         q_results["Condition"] = ""
@@ -52,10 +56,46 @@ for index,row in order:
     q_results["Correctness"] = None
     q_results["ConditionCorrectness"] = None
     q_results["Time"] = 0.0
-    item = row["Filename"]
-    video_file = open(item, 'rb')
-    data = video_file.read()
-    st.video(data, format="video/mp4", start_time=0)
+    # video_file = open(item, 'rb')
+    data = cv2.VideoCapture(q_results["Video"])
+    if condition == "visual" or condition == "audiovisual":
+        vddata = cv2.VideoCapture(q_results["ConditionFileVisual"])
+    # data = video_file.read()
+    s = st.button("Start Video")
+    if s:
+        while data.isOpened():
+            ret, frame = data.read()
+            if ret == True:
+                cv2.imshow('Frame', frame)                
+            # Press Q on keyboard to exit
+                if cv2.waitKey(25) & 0xFF == ord('q'):
+                    break
+        # Break the loop
+            else:
+                break
+        # When everything done, release
+        # the video capture object
+        data.release()
+        # Closes all the frames
+        cv2.destroyAllWindows()
+        # autoplay video st.video(data, format="video/mp4", start_time=0)
+        if condition_value:
+            if condition == "auditory":
+                ps(q_results["ConditionFileAuditory"])
+            elif condition == "audiovisual" or condition == "visual":
+                if condition == "audiovisual":
+                    ps(q_results["ConditionFileAuditory"])
+                # autoplay visual distraction on second screen
+                while vddata.isOpened():
+                    ret, frame = vddata.read()
+                    if ret == True:
+                        cv2.imshow('Frame', frame)
+                        if cv2.waitKey(25) & 0xFF == ord('q'):
+                            break
+                    else:
+                        break
+                vddata.release()
+                cv2.destroyAllWindows()
     confirm = st.checkbox(label="I confirm that I have watched the entire video.",value=False)
     if confirm:
         cont = st.button("Weiter")

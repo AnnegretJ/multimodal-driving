@@ -32,9 +32,16 @@ distraction_questions = pd.read_csv(filepath+"distractionquestions.csv",header=1
 current_results = []
 condition = sys.argv[-1] # write condition when calling the file (auditory, visual, audiovisual)
 order = random(exam_questions.iterrows()) # randomize order of questions
-distraction_order = random(distraction_questions.iterrows())
+distractions = distraction_questions.iterrows()
+res = [(i,j) for i, j in zip(distractions[::2], distractions[1::2])] # pair rows with same question but different truth values in answers
+new = []
+for item in res:
+    result = random(item) # only keep one of the items, so that no participant has the same question twice
+    new.append(result)
+distraction_order = random(new)
+
 # maybe take distraction-determination out of this file and do separately, mirror participant-screen and start distraction when participant clicks "play"
-condition_values = random([True,True,True,True,True,True,True,False,False,False,False,False,False,False,False]) # make it more likely to get a False than to get a True
+condition_values = random([True,True,True,True,True,True,True,True,False,False,False,False,False,False,False]) # 8 with distraction, 7 without
 for index,row in order:
     condition_value = condition_values[0]
     del condition_values[0]

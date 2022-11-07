@@ -18,33 +18,15 @@ def auditory(q): # pass dictionary with all information (q_results)
     start = xpy.io.TextInput(message="Drücke 'Enter' auf der Tastatur um das Video zu starten")
     if start.get() == "":
         # play exam video
-        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/videos")
-        data = cv2.VideoCapture(q["Video"][len("videos/"):],apiPreference=0)
-        # data = xpy.stimuli.Video(q["Video"])
-        # data.preload()
+        # os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/videos")
+        # data = cv2.VideoCapture(q["Video"][len("videos/"):],apiPreference=0)
+        data = xpy.stimuli.Video(q["Video"],backend="mediadecoder")
+        data.preload()
         # play audio
-        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data")
         sound = xpy.stimuli.Audio(q["ConditionFileAuditory"])
         sound.preload()
-        # screen = xpy.stimuli.BlankScreen(colour=(255,255,255)) # create a white blank screen in the background while the video is playing
-        # screen.preload()
         sound.present()
-        # screen.present()
-        while data.isOpened():
-            ret, frame = data.read()
-            if ret == True:
-                cv2.imshow('Frame', frame)
-                cv2.setWindowProperty('Frame',cv2.WND_PROP_TOPMOST,1)
-                cv2.waitKey(5)
-                if cv2.waitKey(25) & 0xFF == ord('q'):
-                    break
-        # Break the loop
-            else:
-                break
-        data.release()
-        # Closes all the frames
-        cv2.destroyAllWindows()
-        #data.present()
+        data.present()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
     if confirm.get() == "":
         exam_q(q)
@@ -80,22 +62,27 @@ def auditory(q): # pass dictionary with all information (q_results)
 def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-        # data = xpy.stimuli.Video("study_1-data/"+q["Video"])
         os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/videos")
         data = cv2.VideoCapture(q["Video"][len("videos/"):],apiPreference=0)
-        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/distraction_video")
-        vdata = cv2.VideoCapture(q["ConditionFileVisual"][len("distraction_video/"):],apiPreference=0)
-        while data.isOpened() or vddata.isOpended(): # while one of the videos is running
-            ret, frame = data.read()
-            vret, vframe = vddata.read()
-            if ret == True:
-                cv2.imshow('Frame', frame)
+        
+        # read_correct = True
+        while data.isOpened:
+            ret,frame = data.read()
+            if ret:
+                cv2.imshow('Frame',frame)
                 cv2.setWindowProperty('Frame',cv2.WND_PROP_TOPMOST,1)
                 cv2.waitKey(5)
-                # Press Q on keyboard to exit
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     break
-            if vret == True:
+            else:
+                break
+            data.release()
+            # cv2.destroyAllWindows()
+        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/distraction_video")
+        vdata = cv2.VideoCapture(q["ConditionFileVisual"][len("distraction_video/"):],apiPreference=0)
+        while vdata.isOpened:
+            vret, vframe = vdata.read()
+            if vret: 
                 cv2.imshow('VFrame', vframe)
                 cv2.moveWindow('VFrame', 900,-900) # move upwards to second screen
                 cv2.setWindowProperty('VFrame',cv2.WND_PROP_TOPMOST,1)
@@ -104,21 +91,17 @@ def visual(q):
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     break
             # Break the loop
-            if ret != True and vret != True: # if both are at the end
+            else:
                 break
-            vddata.release()
+            vdata.release()
             # When everything done, release
             # the video capture object
-            data.release()
             # Closes all the frames
             cv2.destroyAllWindows()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
     if confirm.get() == "":
         exam_q(q)
         distract_q(q)
-        # sub = xpy.stimuli.TextScreen("","Weiter")
-        # sub_button = xpy.io.EventButtonBox(interface=xpy.io.SerialPort("TCP"))
-        # if sub_button.check() != None:
         sub = xpy.io.TextInput("Weiter (Drücke 'Enter')")
         if sub.get() == "":
             correct_results = []
@@ -203,31 +186,9 @@ def baseline(q): # without distractions
     start = xpy.io.TextInput(message="Drücke 'Enter' auf der Tastatur um das Video zu starten")
     if start.get() == "":
         # play exam video
-        # data = xpy.stimuli.Video("study_1-data/"+q["Video"])
-        # data.preload()
-        # data.present()
-        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/videos")
-        data = cv2.VideoCapture(q["Video"][len("videos/"):],apiPreference=0)
-        # data = xpy.stimuli.Video(q["Video"])
-        # data.preload()
-        # play audio
-        # screen = xpy.stimuli.BlankScreen(colour=(255,255,255)) # create a blank screen in the background while the video is playing
-        # screen.preload()
-        # screen.present()
-        while data.isOpened():
-            ret, frame = data.read()
-            if ret == True:
-                cv2.imshow('Frame', frame)
-                cv2.setWindowProperty('Frame',cv2.WND_PROP_TOPMOST,1)
-                cv2.waitKey(5)
-                if cv2.waitKey(25) & 0xFF == ord('q'):
-                    break
-        # Break the loop
-            else:
-                break
-        data.release()
-        # Closes all the frames
-        cv2.destroyAllWindows()
+        data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
+        data.preload()
+        data.present()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
     if confirm.get() == "":
         results = exam_q(q)
@@ -314,7 +275,7 @@ for item in res:
 distraction_order = random.sample(new,len(new))
 con = [True,True,True,True,True,True,True,True,False,False,False,False,False,False,False]
 condition_values = random.sample(con,len(con)) # 8 with distraction, 7 without
-condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
+condition_values = [True,False,True,False] + condition_values # four items (2 with 2 without distraction) for initialization
 for index in order:   
     current_results = []
     condition_value = condition_values.pop()

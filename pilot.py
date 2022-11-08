@@ -189,7 +189,7 @@ def baseline(q): # without distractions
 
 # questionnaire
 def exam_q(data): # for answering the exam questions
-    if data["Answer C"][0] != None:
+    if data["Answer C"][0] != "None":
         questions = "\n" + data["Question"] +  "\n\n 1   " + data["Answer A"][0] + "\n 2   " + data["Answer B"][0] + "\n 3  " + data["Answer C"][0]
     else:
         questions = "\n 1   " + data["Answer A"][0] + "\n 2   " + data["Answer B"][0]
@@ -205,7 +205,7 @@ def exam_q(data): # for answering the exam questions
         out.append(True)
     else:
         out.append(False)
-    if data["Answer C"][0] != None:
+    if data["Answer C"][0] != "None":
         if "3" in reply:
             out.append(True)
         else:
@@ -215,7 +215,7 @@ def exam_q(data): # for answering the exam questions
     return out
 
 def distract_q(data): # for answering the distraction questions
-    if data["DistractionAnswer C"][0] != None:
+    if data["DistractionAnswer C"][0] != "None":
         questions = "\n" + data["ConditionQuestion"] +  "\n\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0] + "\n 3  " + data["DistractionAnswer C"][0]
     else:
         questions = "\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0]
@@ -231,7 +231,7 @@ def distract_q(data): # for answering the distraction questions
         out.append(True)
     else:
         out.append(False)
-    if data["DistractionAnswer C"][0] != None:
+    if data["DistractionAnswer C"][0] != "None":
         if "3" in reply:
             out.append(True)
         else:

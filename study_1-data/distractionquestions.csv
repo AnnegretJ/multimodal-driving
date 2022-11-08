@@ -1,5 +1,5 @@
 ﻿Filename Auditory;Filename Visual;Question;Answer A;Correctness A;Answer B;Correctness B;Answer C;Correctness C
-distraction_audio/wetter_heute.mp3;distraction_video/wetter_heute.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;TRUE;Morgen;FALSE;Weiß ich nicht;FALSE
+distraction_audio/wetter_heute.wav;distraction_video/wetter_heute.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;TRUE;Morgen;FALSE;Weiß ich nicht;FALSE
 distraction_audio/wetter_morgen.wav;distraction_video/wetter_morgen.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;FALSE;Morgen;TRUE;Weiß ich nicht;FALSE
 distraction_audio/wetter_bewoelkt.wav;distraction_video/wetter_bewoelkt.mp4;Was für ein Wetter wurde vorhergesagt?;Bewölkt;TRUE;Regen;FALSE;Weiß ich nicht;FALSE
 distraction_audio/wetter_regen.wav;distraction_video/wetter_regen.mp4;Was für ein Wetter wurde vorhergesagt?;Bewölkt;FALSE;Regen;TRUE;Weiß ich nicht;FALSE

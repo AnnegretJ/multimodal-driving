@@ -11,7 +11,8 @@ import cv2
 # initialize experiment
 exp = xpy.design.Experiment(name="Pilot Study")
 xpy.control.initialize(exp)
-
+# main_screen = xpy.io.Screen(colour=(0,0,0),open_gl=True,window_mode=True,window_size=(1550,1550),no_frame=False)
+# distraction-screen is the current screen/laptop screen
 
 # functions for items
 def auditory(q): # pass dictionary with all information (q_results)
@@ -64,17 +65,27 @@ def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
         data = xpy.stimuli.Video("study_1-data/"+q["Video"])
-        vdata = xpy.stimuli.Video("study_1-data/"+q["ConditionFileVisual"])
         data.preload()
-        vdata.preload()
+        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/distraction_video/")
+        vdata = cv2.VideoCapture(q["ConditionFileVisual"][len("distraction_video/"):],apiPreference=0)
         data.play()
-        vdata.play()
+        while vdata.isOpened(): # use cv2 to play second video
+            ret, frame = vdata.read()
+            if ret == True:
+                cv2.imshow('Frame', frame)
+            # Press Q on keyboard to exit
+                if cv2.waitKey(25) & 0xFF == ord('q'):
+                    break
+        # Break the loop
+            else:
+                break
+        vdata.release()
         data.present()
-        vdata.present()
         data.wait_end()
-        vdata.wait_end()
         data.stop()
-        vdata.stop()
+        # Closes all the frames
+        cv2.destroyAllWindows()
+        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/")
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
     if confirm.get() == "":
         e_results = exam_q(q)
@@ -219,7 +230,7 @@ def distract_q(data): # for answering the distraction questions
         questions = "\n" + data["ConditionQuestion"] +  "\n\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0] + "\n 3  " + data["DistractionAnswer C"][0]
     else:
         questions = "\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0]
-    info = xpy.stimuli.TextBox(text = "Bitte schreibe die Nummern der richtigen Antworten in das Textfeld und bestätige mit 'Enter'.\n" + questions,size=(500,500))
+    info = xpy.stimuli.TextBox(text = "Bitte schreiben Sie die Nummern der richtigen Antworten in das Textfeld und bestätigendie Eingabe mit 'Enter'.\n" + questions,size=(500,500))
     question = xpy.io.TextInput("",background_stimulus = info,gap=5)
     reply = question.get()
     out = []

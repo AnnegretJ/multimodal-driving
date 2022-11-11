@@ -64,7 +64,7 @@ def auditory(q): # pass dictionary with all information (q_results)
 def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-        
+
         cap1 = cv2.VideoCapture("study_1-data/"+q["Video"])
         cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
         while cap1.isOpened() or cap2.isOpened():
@@ -272,7 +272,6 @@ xpy.control.start()
 exam_questions = pd.read_csv("study_1-data/videoquestions.csv",sep=";",encoding="utf-8",header=[0])
 distraction_questions = pd.read_csv("study_1-data/distractionquestions.csv",sep=";",encoding="utf-8",header=[0])
 condition = sys.argv[-1] # write condition when calling the file (auditory, visual, audiovisual)
-order = random.sample([x for x,y in exam_questions.iterrows()],len([x for x,y in exam_questions.iterrows()])) # randomize order of questions
 distractions = [x for x,y in distraction_questions.iterrows()]
 res = [(i,j) for i, j in zip(distractions[::2], distractions[1::2])] # pair rows with same question but different truth values in answers
 new = []
@@ -280,11 +279,14 @@ for item in res:
     result = random.sample(list(item),1) # only keep one of the items, so that no participant has the same question twice
     new.extend(result)
 distraction_order = random.sample(new,len(new))
-con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
-condition_values = random.sample(con,len(con)) # 7 without distraction, 5 with
-condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
+# con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
+# condition_values = random.sample(con,len(con)) # 7 without distraction, 5 with
+# condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
+condition_values = [False,True] # for testing
+order = random.sample([x for x,y in exam_questions.iterrows()],len(condition_values)) # randomize order of questions, just as many questions as there are condition values
+print(order)
+current_results = []
 for index in order:
-    current_results = []
     try:
         condition_value = condition_values[0]
         del condition_values[0]
@@ -325,16 +327,22 @@ for index in order:
         q_results = audiovisual(q_results)
     else: # when condition_value is False
         q_results = baseline(q_results)
-    current_results.append(q_results)
+    last = q_results.copy()
+    current_results.append(last) # create a copy of results to save
 
 # button when Done
 done = xpy.io.TextInput("Drücken Sie 'Enter', wenn Sie fertig sind.")
 if done.get() == "":
     title = xpy.io.TextInput("Bitte antworten Sie noch auf ein paar Fragen zu Ihrer Person. Drücken Sie 'Enter' zum Bestätigen der Eingabe.")
-    age = xpy.io.TextInput(message="Wie alt sind Sie?",default_input=int)
-    year_of_license = xpy.io.TextInput(message="In welchem Jahr haben Sie ihren Führerschein erhalten?",default_input=int)
-    regularity_driving = xpy.io.TextInput(message="Wie häufig fahren Sie selbst Auto?",default_input=str)
-    personal_distractors = xpy.io.TextInput("Wovon werden Sie leicht abgelenkt? (z.B. beim Auto fahren, beim Lernen, beim Arbeiten)",default_input=str)
+    if title.get() == "":
+        age = xpy.io.TextInput(message="Wie alt sind Sie?",length=2)
+        age = age.get()
+        year_of_license = xpy.io.TextInput(message="In welchem Jahr haben Sie ihren Führerschein erhalten?",length=4)
+        year_of_license = year_of_license.get()
+        regularity_driving = xpy.io.TextInput(message="Wie häufig fahren Sie selbst Auto?",length=20)
+        regularity_driving = regularity_driving.get()
+        personal_distractors = xpy.io.TextInput("Wovon werden Sie leicht abgelenkt? (z.B. beim Auto fahren, beim Lernen, beim Arbeiten)",length=50)
+        personal_distractors = personal_distractors.get()
     for item in current_results:
         item["Age"] = age
         item["YearOfLicense"] = year_of_license

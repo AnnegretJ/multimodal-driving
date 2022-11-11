@@ -11,8 +11,8 @@ import cv2
 # initialize experiment
 exp = xpy.design.Experiment(name="Pilot Study")
 xpy.control.initialize(exp)
-# main_screen = xpy.io.Screen(colour=(0,0,0),open_gl=True,window_mode=True,window_size=(1550,1550),no_frame=False)
-# distraction-screen is the current screen/laptop screen
+# main_screen = xpy.io.Screen(colour=(0,0,0),open_gl=True,window_mode=True,window_size=(1550,800),no_frame=False)
+# distraction-screen is the current screen/laptop screen, have projector-screen as first display in settings!
 
 # functions for items
 def auditory(q): # pass dictionary with all information (q_results)
@@ -64,28 +64,28 @@ def auditory(q): # pass dictionary with all information (q_results)
 def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-        data = xpy.stimuli.Video("study_1-data/"+q["Video"])
-        data.preload()
-        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/study_1-data/distraction_video/")
-        vdata = cv2.VideoCapture(q["ConditionFileVisual"][len("distraction_video/"):],apiPreference=0)
-        data.play()
-        while vdata.isOpened(): # use cv2 to play second video
-            ret, frame = vdata.read()
-            if ret == True:
-                cv2.imshow('Frame', frame)
-            # Press Q on keyboard to exit
-                if cv2.waitKey(25) & 0xFF == ord('q'):
-                    break
-        # Break the loop
-            else:
+        
+        cap1 = cv2.VideoCapture("study_1-data/"+q["Video"])
+        cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
+        while cap1.isOpened() or cap2.isOpened():
+            okay1  , frame1 = cap1.read()
+            okay2 , frame2 = cap2.read()
+            if okay1:
+                hsv1 = cv2.cvtColor(frame1 , cv2.COLOR_BGR2HSV)
+                cv2.imshow('main' , hsv1)
+            if okay2:
+                hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
+                cv2.imshow('main' , hsv2)
+            if not okay1 or not okay2:
+                print('Cant read the video , Exit!')
                 break
-        vdata.release()
-        data.present()
-        data.wait_end()
-        data.stop()
-        # Closes all the frames
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            cv2.waitKey(1)
+        cap1.release()
+        cap2.release()
         cv2.destroyAllWindows()
-        os.chdir("C:/Users/janzso/Desktop/multimodal-driving/")
+
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
     if confirm.get() == "":
         e_results = exam_q(q)
@@ -287,9 +287,9 @@ for index in order:
     current_results = []
     try:
         condition_value = condition_values[0]
+        del condition_values[0]
     except IndexError:
         condition_value = False
-    del condition_values[0]
     q_results = dict()
     q_results["Age"] = 0
     q_results["YearOfLicense"] = 0
@@ -340,8 +340,8 @@ if done.get() == "":
         item["YearOfLicense"] = year_of_license
         item["RegularityDriving"] = regularity_driving
         item["PersonalDistractors"] = personal_distractors
-        params = (item["Age"],item["YearOfLicense"],item["RegularityDriving"],item["PersonalDistractors"],item["Video"],item["Question"],item["Condition"],item["Correctness"],item["Time"])
-        cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params)
+        params = (item["Age"],item["YearOfLicense"],item["RegularityDriving"],item["PersonalDistractors"],item["Video"],item["Question"],item["Condition"],item["Correctness"],item["Time"],item["ConditionQuestion"],item["ConditionCorrectness"])
+        cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", params)
     submit = xpy.io.TextInput("Drücken Sie 'Enter' um die Studie zu beenden.")
     if submit.get() == "":
         connection.commit()

@@ -64,20 +64,20 @@ def auditory(q): # pass dictionary with all information (q_results)
 def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-
         cap1 = cv2.VideoCapture("study_1-data/"+q["Video"])
         cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
         while cap1.isOpened() or cap2.isOpened():
             okay1  , frame1 = cap1.read()
             okay2 , frame2 = cap2.read()
             if okay1:
-                hsv1 = cv2.cvtColor(frame1 , cv2.COLOR_BGR2HSV)
-                cv2.imshow('main' , hsv1)
+                # hsv1 = cv2.cvtColor(frame1 , cv2.COLOR_BGR2HSV)
+                cv2.imshow('main' , frame1)
+                cv2.setWindowProperty("main", cv2.WND_PROP_TOPMOST, 1) # have window "main" appear on top of all other windows
             if okay2:
-                hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
-                cv2.imshow('main' , hsv2)
+                # hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
+                cv2.imshow('distract' , frame2)
+                cv2.setWindowProperty("distract", cv2.WND_PROP_TOPMOST, 1) # same for "distract"
             if not okay1 or not okay2:
-                print('Cant read the video , Exit!')
                 break
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
@@ -121,21 +121,31 @@ def visual(q):
 def audiovisual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-        data = xpy.stimuli.Video("study_1-data/"+q["Video"])
-        vdata = xpy.stimuli.Video("study_1-data/"+q["ConditionFileVisual"])
+        cap1 = cv2.VideoCapture("study_1-data/"+q["Video"])
+        cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
+        # play audio
         sound = xpy.stimuli.Audio("study_1-data/"+q["ConditionFileAuditory"])
-        data.preload()
-        vdata.preload()
         sound.preload()
         sound.present()
-        data.play()
-        vdata.play()
-        data.present()
-        vdata.present()
-        data.wait_end()
-        vdata.wait_end()
-        data.stop()
-        vdata.stop()
+        while cap1.isOpened() or cap2.isOpened():
+            okay1  , frame1 = cap1.read()
+            okay2 , frame2 = cap2.read()
+            if okay1:
+                # hsv1 = cv2.cvtColor(frame1 , cv2.COLOR_BGR2HSV)
+                cv2.imshow('main' , frame1)
+                cv2.setWindowProperty("main", cv2.WND_PROP_TOPMOST, 1) # have window "main" appear on top of all other windows
+            if okay2:
+                # hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
+                cv2.imshow('distract' , frame2)
+                cv2.setWindowProperty("distract", cv2.WND_PROP_TOPMOST, 1) # same for "distract"
+            if not okay1 or not okay2:
+                break
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            cv2.waitKey(1)
+        cap1.release()
+        cap2.release()
+        cv2.destroyAllWindows()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter'")
     if confirm.get() == "":
         e_results = exam_q(q)
@@ -256,10 +266,6 @@ def distract_q(data): # for answering the distraction questions
 connection = sqlite3.connect("results.db") # databench for collected data
 cursor = connection.cursor()
 s_sql = "CREATE TABLE IF NOT EXISTS Study1( " \
-    "Age INT, " \
-    "YearOfLicense INT, " \
-    "RegularityDriving TEXT, " \
-    "PersonalDistractors TEXT, " \
     "Video TEXT, " \
     "Question TEXT, " \
     "Condition TEXT, " \
@@ -279,12 +285,11 @@ for item in res:
     result = random.sample(list(item),1) # only keep one of the items, so that no participant has the same question twice
     new.extend(result)
 distraction_order = random.sample(new,len(new))
-# con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
-# condition_values = random.sample(con,len(con)) # 7 without distraction, 5 with
-# condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
-condition_values = [False,True] # for testing
+con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
+condition_values = random.sample(con,len(con)) # 7 without distraction, 5 with
+condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
+# condition_values = [False,True] # for testing
 order = random.sample([x for x,y in exam_questions.iterrows()],len(condition_values)) # randomize order of questions, just as many questions as there are condition values
-print(order)
 current_results = []
 for index in order:
     try:
@@ -293,10 +298,6 @@ for index in order:
     except IndexError:
         condition_value = False
     q_results = dict()
-    q_results["Age"] = 0
-    q_results["YearOfLicense"] = 0
-    q_results["RegularityDriving"] = ""
-    q_results["PersonalDistractors"] = ""
     q_results["Video"] = exam_questions.loc[index]["Filename"]
     q_results["Question"] = exam_questions.loc[index]["Question"]
     q_results["Answer A"] = (exam_questions.loc[index]["Answer A"], exam_questions.loc[index]["Correctness A"])
@@ -333,23 +334,9 @@ for index in order:
 # button when Done
 done = xpy.io.TextInput("Drücken Sie 'Enter', wenn Sie fertig sind.")
 if done.get() == "":
-    title = xpy.io.TextInput("Bitte antworten Sie noch auf ein paar Fragen zu Ihrer Person. Drücken Sie 'Enter' zum Bestätigen der Eingabe.")
-    if title.get() == "":
-        age = xpy.io.TextInput(message="Wie alt sind Sie?",length=2)
-        age = age.get()
-        year_of_license = xpy.io.TextInput(message="In welchem Jahr haben Sie ihren Führerschein erhalten?",length=4)
-        year_of_license = year_of_license.get()
-        regularity_driving = xpy.io.TextInput(message="Wie häufig fahren Sie selbst Auto?",length=20)
-        regularity_driving = regularity_driving.get()
-        personal_distractors = xpy.io.TextInput("Wovon werden Sie leicht abgelenkt? (z.B. beim Auto fahren, beim Lernen, beim Arbeiten)",length=50)
-        personal_distractors = personal_distractors.get()
-    for item in current_results:
-        item["Age"] = age
-        item["YearOfLicense"] = year_of_license
-        item["RegularityDriving"] = regularity_driving
-        item["PersonalDistractors"] = personal_distractors
-        params = (item["Age"],item["YearOfLicense"],item["RegularityDriving"],item["PersonalDistractors"],item["Video"],item["Question"],item["Condition"],item["Correctness"],item["Time"],item["ConditionQuestion"],item["ConditionCorrectness"])
-        cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", params)
+    for item in current_results[4:]: # ignore the first four items as they are for initialization
+        params = (item["Video"],item["Question"],item["Condition"],item["Correctness"],item["Time"],item["ConditionQuestion"],item["ConditionCorrectness"])
+        cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?, ?)", params)
     submit = xpy.io.TextInput("Drücken Sie 'Enter' um die Studie zu beenden.")
     if submit.get() == "":
         connection.commit()

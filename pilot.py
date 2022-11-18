@@ -77,6 +77,7 @@ def visual(q):
                 # hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
                 cv2.imshow('distract' , frame2)
                 cv2.setWindowProperty("distract", cv2.WND_PROP_TOPMOST, 1) # same for "distract"
+                cv2.moveWindow("distract", 0, 0)
             if not okay1 or not okay2:
                 break
             if cv2.waitKey(1) & 0xFF == ord('q'):

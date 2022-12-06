@@ -1,0 +1,22 @@
+#Expyriment 0.10.0 (Python 3.8.6), .xpe-file, coding: cp1252
+#date: Tue Dec 06 2022 18:41:12
+#sha1: 445576
+#modules: 
+#display: size=(1536, 864), window_mode=False, open_gl=2
+#os: uname_result(system='Windows', node='PC210911', release='10', version='10.0.19041', machine='AMD64', processor='Intel64 Family 6 Model 140 Stepping 1, GenuineIntel')
+Time,Type,Event,Value,Detail,Detail2
+11731,design,log,
+#design: #exp: Pilot Study
+#design: block_cnt,block_id,trial_cnt,trial_id
+11731,design,logged,
+11731,Experiment,started
+11736,stdout,received,'[False, True, False, True, False, True, True, True, False, False, True, False, False, True, False, True, True]'
+11748,Stimulus,presented,2
+11757,Stimulus,presented,2
+11766,Stimulus,presented,2
+11768,Stimulus,presented,3
+12539,Experiment,paused
+12541,Stimulus,presented,3
+13092,Keyboard,received,y,wait_char
+13092,Experiment,ended
+13112,Stimulus,presented,3

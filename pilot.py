@@ -64,29 +64,27 @@ def auditory(q): # pass dictionary with all information (q_results)
 def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-        cap1 = cv2.VideoCapture("study_1-data/"+q["Video"])
+        data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
+        data.preload()
+        data.play()
+        data.present()
         cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
-        while cap1.isOpened() or cap2.isOpened():
-            okay1  , frame1 = cap1.read()
+        while cap2.isOpened() or data.is_playing:
+            data.update()
             okay2 , frame2 = cap2.read()
-            if okay1:
-                # hsv1 = cv2.cvtColor(frame1 , cv2.COLOR_BGR2HSV)
-                cv2.imshow('main' , frame1)
-                cv2.setWindowProperty("main", cv2.WND_PROP_TOPMOST, 1) # have window "main" appear on top of all other windows
             if okay2:
-                # hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
                 cv2.imshow('distract' , frame2)
                 cv2.setWindowProperty("distract", cv2.WND_PROP_TOPMOST, 1) # same for "distract"
-                cv2.moveWindow("distract", 0, 0)
-            if not okay1 or not okay2:
+                cv2.resizeWindow("distract",1510,815)
+                cv2.moveWindow("distract", 1540, 0)
+            if not okay2:
                 break
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             cv2.waitKey(1)
-        cap1.release()
         cap2.release()
+        data.stop()
         cv2.destroyAllWindows()
-
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
     if confirm.get() == "":
         e_results = exam_q(q)
@@ -122,30 +120,29 @@ def visual(q):
 def audiovisual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
     if start.get() == "":
-        cap1 = cv2.VideoCapture("study_1-data/"+q["Video"])
-        cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
-        # play audio
+        data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
         sound = xpy.stimuli.Audio("study_1-data/"+q["ConditionFileAuditory"])
         sound.preload()
         sound.present()
-        while cap1.isOpened() or cap2.isOpened():
-            okay1  , frame1 = cap1.read()
+        data.preload()
+        data.play()
+        data.present()
+        cap2 = cv2.VideoCapture("study_1-data/"+q["ConditionFileVisual"])
+        while cap2.isOpened() or data.is_playing:
+            data.update()
             okay2 , frame2 = cap2.read()
-            if okay1:
-                # hsv1 = cv2.cvtColor(frame1 , cv2.COLOR_BGR2HSV)
-                cv2.imshow('main' , frame1)
-                cv2.setWindowProperty("main", cv2.WND_PROP_TOPMOST, 1) # have window "main" appear on top of all other windows
             if okay2:
-                # hsv2 = cv2.cvtColor(frame2 , cv2.COLOR_BGR2HSV)
                 cv2.imshow('distract' , frame2)
                 cv2.setWindowProperty("distract", cv2.WND_PROP_TOPMOST, 1) # same for "distract"
-            if not okay1 or not okay2:
+                cv2.resizeWindow("distract",1510,815)
+                cv2.moveWindow("distract", 1540, 0)
+            if not okay2:
                 break
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
             cv2.waitKey(1)
-        cap1.release()
         cap2.release()
+        data.stop()
         cv2.destroyAllWindows()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter'")
     if confirm.get() == "":
@@ -211,12 +208,12 @@ def baseline(q): # without distractions
 
 # questionnaire
 def exam_q(data): # for answering the exam questions
-    if data["Answer C"][0] != "None":
-        questions = "\n" + data["Question"] +  "\n\n 1   " + data["Answer A"][0] + "\n 2   " + data["Answer B"][0] + "\n 3  " + data["Answer C"][0]
+    if data["Answer C"][1] != "NONE":
+        questions = "\n" + data["Question"] + "\n\n 1   " + data["Answer A"][0] + "\n 2   " + data["Answer B"][0] + "\n 3  " + data["Answer C"][0]
     else:
-        questions = "\n 1   " + data["Answer A"][0] + "\n 2   " + data["Answer B"][0]
+        questions = "\n" + data["Question"] + "\n\n 1   " + data["Answer A"][0] + "\n 2   " + data["Answer B"][0]
     info = xpy.stimuli.TextBox(text = "Bitte schreibe die Nummern der richtigen Antworten in das Textfeld und bestätige mit 'Enter'.\n" + questions,size=(500,500))
-    question = xpy.io.TextInput("",background_stimulus = info,gap=5)
+    question = xpy.io.TextInput("",background_stimulus = info,gap=7)
     reply = question.get()
     out = []
     if "1" in reply:
@@ -227,7 +224,7 @@ def exam_q(data): # for answering the exam questions
         out.append(True)
     else:
         out.append(False)
-    if data["Answer C"][0] != "None":
+    if data["Answer C"][1] != "NONE":
         if "3" in reply:
             out.append(True)
         else:
@@ -237,12 +234,12 @@ def exam_q(data): # for answering the exam questions
     return out
 
 def distract_q(data): # for answering the distraction questions
-    if data["DistractionAnswer C"][0] != "None":
+    if data["DistractionAnswer C"][1] != "NONE":
         questions = "\n" + data["ConditionQuestion"] +  "\n\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0] + "\n 3  " + data["DistractionAnswer C"][0]
     else:
-        questions = "\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0]
+        questions = "\n" + data["ConditionQuestion"] + "\n\n 1   " + data["DistractionAnswer A"][0] + "\n 2   " + data["DistractionAnswer B"][0]
     info = xpy.stimuli.TextBox(text = "Bitte schreiben Sie die Nummern der richtigen Antworten in das Textfeld und bestätigendie Eingabe mit 'Enter'.\n" + questions,size=(500,500))
-    question = xpy.io.TextInput("",background_stimulus = info,gap=5)
+    question = xpy.io.TextInput("",background_stimulus = info,gap=7)
     reply = question.get()
     out = []
     if "1" in reply:
@@ -253,7 +250,7 @@ def distract_q(data): # for answering the distraction questions
         out.append(True)
     else:
         out.append(False)
-    if data["DistractionAnswer C"][0] != "None":
+    if data["DistractionAnswer C"][1] != "NONE":
         if "3" in reply:
             out.append(True)
         else:
@@ -272,8 +269,7 @@ s_sql = "CREATE TABLE IF NOT EXISTS Study1( " \
     "Condition TEXT, " \
     "Correctness BOOL, " \
     "ConditionQuestion TEXT, " \
-    "ConditionCorrectness BOOL, " \
-    "Time FLOAT )"
+    "ConditionCorrectness BOOL )"
 cursor.execute(s_sql)
 xpy.control.start()
 exam_questions = pd.read_csv("study_1-data/videoquestions.csv",sep=";",encoding="utf-8",header=[0])
@@ -287,9 +283,11 @@ for item in res:
     new.extend(result)
 distraction_order = random.sample(new,len(new))
 con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
-condition_values = random.sample(con,len(con)) # 7 without distraction, 5 with
+condition_values = random.sample(con,len(con)) # 6 without distraction, 7 with
 condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
 # condition_values = [False,True] # for testing
+print(condition_values)
+print(len(distraction_order))
 order = random.sample([x for x,y in exam_questions.iterrows()],len(condition_values)) # randomize order of questions, just as many questions as there are condition values
 current_results = []
 for index in order:
@@ -301,24 +299,23 @@ for index in order:
     q_results = dict()
     q_results["Video"] = exam_questions.loc[index]["Filename"]
     q_results["Question"] = exam_questions.loc[index]["Question"]
-    q_results["Answer A"] = (exam_questions.loc[index]["Answer A"], exam_questions.loc[index]["Correctness A"])
-    q_results["Answer B"] = (exam_questions.loc[index]["Answer B"], exam_questions.loc[index]["Correctness B"])
-    q_results["Answer C"] = (exam_questions.loc[index]["Answer C"], exam_questions.loc[index]["Correctness C"])
+    q_results["Answer A"] = (exam_questions.loc[index]["Answer A"], str(exam_questions.loc[index]["Correctness A"]).upper())
+    q_results["Answer B"] = (exam_questions.loc[index]["Answer B"], str(exam_questions.loc[index]["Correctness B"]).upper())
+    q_results["Answer C"] = (exam_questions.loc[index]["Answer C"], str(exam_questions.loc[index]["Correctness C"]).upper())
     if condition_value and distraction_order != []:
         q_results["Condition"] = condition
         q_results["ConditionFileAuditory"] = distraction_questions.loc[distraction_order[0]]["Filename Auditory"]
         q_results["ConditionFileVisual"] = distraction_questions.loc[distraction_order[0]]["Filename Visual"]
         q_results["ConditionQuestion"] = distraction_questions.loc[distraction_order[0]]["Question"]
-        q_results["DistractionAnswer A"] = (distraction_questions.loc[distraction_order[0]]["Answer A"], distraction_questions.loc[distraction_order[0]]["Correctness A"])
-        q_results["DistractionAnswer B"] = (distraction_questions.loc[distraction_order[0]]["Answer B"], distraction_questions.loc[distraction_order[0]]["Correctness B"])
-        q_results["DistractionAnswer C"] = (distraction_questions.loc[distraction_order[0]]["Answer C"], distraction_questions.loc[distraction_order[0]]["Correctness C"])
+        q_results["DistractionAnswer A"] = (distraction_questions.loc[distraction_order[0]]["Answer A"], str(distraction_questions.loc[distraction_order[0]]["Correctness A"]).upper())
+        q_results["DistractionAnswer B"] = (distraction_questions.loc[distraction_order[0]]["Answer B"], str(distraction_questions.loc[distraction_order[0]]["Correctness B"]).upper())
+        q_results["DistractionAnswer C"] = (distraction_questions.loc[distraction_order[0]]["Answer C"], str(distraction_questions.loc[distraction_order[0]]["Correctness C"]).upper())
         del distraction_order[0] # remove the first value
     else:
         q_results["Condition"] = ""
         q_results["ConditionQuestion"] = None
     q_results["Correctness"] = None
     q_results["ConditionCorrectness"] = None
-    q_results["Time"] = 0.0
 
     # call functions for samples
     if condition_value and condition == "auditory" and distraction_order != []:
@@ -336,8 +333,8 @@ for index in order:
 done = xpy.io.TextInput("Drücken Sie 'Enter', wenn Sie fertig sind.")
 if done.get() == "":
     for item in current_results[4:]: # ignore the first four items as they are for initialization
-        params = (item["Video"],item["Question"],item["Condition"],item["Correctness"],item["Time"],item["ConditionQuestion"],item["ConditionCorrectness"])
-        cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?, ?)", params)
+        params = (item["Video"],item["Question"],item["Condition"],item["Correctness"],item["ConditionQuestion"],item["ConditionCorrectness"])
+        cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?)", params)
     submit = xpy.io.TextInput("Drücken Sie 'Enter' um die Studie zu beenden.")
     if submit.get() == "":
         connection.commit()

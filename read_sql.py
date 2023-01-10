@@ -15,10 +15,10 @@ def per_participant(data): # sort data per participant
 
 def per_condition(data): # sort data per condition
     condition = dict()
-    condition[auditory] = data.loc[data['Condition'] == "auditory"] # get all rows with auditory distraction
-    condition[visual] = data.loc[data['Condition'] == "visual"]
-    condition[audiovisual] = data.loc[data['Condition'] == "audiovisual"]
-    condition[no_con] = data.loc[data['Condition'] == ""]
+    condition["auditory"] = data.loc[data['Condition'] == "auditory"] # get all rows with auditory distraction
+    condition["visual"] = data.loc[data['Condition'] == "visual"]
+    condition["audiovisual"] = data.loc[data['Condition'] == "audiovisual"]
+    condition["no_con"] = data.loc[data['Condition'] == ""]
     return condition # return dictionary of condition mapped with the according part of the dataframe
 
 def per_video(data): # sort data per video
@@ -82,6 +82,14 @@ def common_distraction(data): # sort by common distractions
         distraction[value] = data.loc[data["Distractions"] == value]
     return distraction
 
+def get_distraction_item(data): # sort by individual distraction item (independent of distraction type)
+    dis_item = dict()
+    for value in data["ConditionQuestion"]:
+        if value in dis_item.keys():
+            continue
+        dis_item[value] = data.loc[data["ConditionQuestion"] == value]
+    return dis_item
+
 if __name__ == "__main__":
     conn = sqlite3.connect("results.db")
     data = pd.read_sql("SELECT * from Study1",conn)
@@ -92,16 +100,17 @@ if __name__ == "__main__":
     year = []
     distractions = []
     experience = []
-    for i in range(12):# range(30): # 30 participants
-        subject_number.extend([additional_data.loc[i]["Subject Number"]]*13)
-        age.extend([additional_data.loc[i]["Alter"]]*13)
-        year.extend([additional_data.loc[i]["Jahr"]]*13)
-        distractions.extend([additional_data.loc[i]["Ablenkungen transcription"]]*13)
-        experience.extend([additional_data.loc[i]["Erfahrung transcription"]]*13)
-    print(type({"Subject Number":subject_number}))
     print(list(data["ConditionCorrectness"]))
     print(list(data["Correctness"]))
-    print(list(data["Condition"]))
+    print(len(list(data["Condition"])))
+    print(list(data["ConditionQuestion"]))
+    for i in range(20): # 30 participants
+        subject_number.extend([additional_data.loc[i]["Subject Number"]]*11)
+        age.extend([additional_data.loc[i]["Alter"]]*11)
+        year.extend([additional_data.loc[i]["Jahr"]]*11)
+        distractions.extend([additional_data.loc[i]["Ablenkungen transcription"]]*11)
+        experience.extend([additional_data.loc[i]["Erfahrung transcription"]]*11)
+    # print(type({"Subject Number":subject_number}))
     data.assign({"Subject Number":subject_number})
     data.assign({"Age":age})
     data.assign({"Year":year})

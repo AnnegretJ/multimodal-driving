@@ -6,3 +6,5 @@ related_work/*
 *.docx
 *.db
 *.zip
+data/*
+events/*

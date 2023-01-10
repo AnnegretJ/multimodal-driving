@@ -1,13 +1,19 @@
-Subject Number;Alter;Jahr;Ablenkungen;Erfahrung;Ablenkungen transcription;Erfahrung transcription
-1;20;2020;Handy,Mit Fahrern;1x alle 3 Monate;phone,acoustic stimuli;rarely
-2;31;2008;Auditive Reize,insbesondere gesprochene Sprache (mehr als durch Musik mit Gesang), auch visuelle Reize wie blinkende Lichter;2-3mal monatlich;acoustic stimuli, visual stimuli;2-3 times a month
-3;26;2014;Musik,blinkende Lichter,laute Geräusche,Gegenlicht,wenn ich über einen Teil der Aufgabe nachdenken muss z.B. ob ich Vorfahrt habe;1mal im Monat;acoustic stimuli,visual stimuli,pondering about a task;once or twice a month
-4;24;2015;Nachrichten auf dem Handy,Gespräche;seit 5 Jahren fast nie;mobile phone, acoustic stimuli;rarely
-5;29;2011;Katzen,alles;selten;other;rarely
-6;27;2014;Handy,Freunde,Lärm;nie;phone,acoustic stimuli,loud noises;never
-7;24;2017;laute Musik und Gespräche;fast gar nicht;acoustic stimuli,loud sounds;rarely
-8;29;2010;Musik und Menschen wobei Musik eher die Konzentration fördert je nach Art;fast nie;acoustic stimuli;rarely
-9;34;2008(Theorie);Geschichten,Tagträumen,andere Dinge die gerade wichtig erscheinen,zu erledigende Aufgaben,Menschen,Hunger,Ideen;nie;acoustic stimuli,other,visual stimuli;never
-10;28;2012;Geräusche,Situationen;1-2mal im Monat;acoustic stimuli,visual stimuli;once or twice a month
-11;26;2013;erschütternde Nachrichten,Stress,Nachrichten vom Handy;4-7 Tage die Woche;phone,other;(almost) daily
-12;25;2013(A1),2015(B);spontane unerwartete Geräusche bei fast jeder Tätigkeit,vom Handy nur beim Lernen oder Arbeiten (no-phone-policy im Auto);Auto ca 1mal alle 1-2 Wochen, Motorrad von März bis Oktober täglich;acoustic stimuli,phone;often
+﻿Subject Number;Alter;Jahr;Erfahrung;Ablenkung;Erfahrung transcription;Ablenkungen transcription
+1;25;2014;nie;Geräusche, von Menschen, Licht (Sonneneinstrahlung?);never;auditory, visual, people
+2;32;2007;3-4x im Monat;zu spannende Videos/Serien/Dokumentationen (Erzählungen) => vorrangig Bild + Ton;3-4 times a month;auditory, visual
+3;31;2008;1-2 mal monatlich;visuelle Reize, auch auditive Reize (z.B. wenn jemand etwas erzählt);1-2 times a month;visual, auditory
+4;23;2017;selten, vllt einmal alle 3 Monate;laute Unterhaltungen, Bildschirme, schnelle/ruckartige Bewegungen, Musik (vllt eher beim Lernen als beim Fahren);rarely;auditory, visual, movements
+5;26;2013;täglich;im Auto: durch Gespräche mit den Mitfahrenden, sonst: durch das Internet, ein Link führt zum nächsten … auch durch Gesprächspartner;daily;people
+6;29;2010;nie;es kommt ein bisschen drauf an, unerwartete laute Geräusche oder bestimmte laute Musik;never;auditory
+7;27;2013;selten;alles: Lichtsignale(blinken, leuchten, etc), Bewegungen, eigene Gedanken, plötzliche Geräusche, melodische Geräusche etc.;rarely;visual, auditory, movements, thoughts
+8;29;2011;selten, habe kein eigenes - vllt alle 2 Monate;Handytöne/Vibrieren, Benachrichtigungen auf PC-Bildschirm, Gespräche im Hintergrund;rarely;auditory, visual
+9;21;2022;1-2 mal die Woche;beim Autofahren, beim Lernen, beim Zuhören in Vorlesungen, beim Lesen, beim Fernsehen;1-3 times a week;n/a
+10;24;2015;seit fünf Jahren fast nie;Nachrichten auf dem Handy, Unterhaltungen von anderen;rarely;visual, people
+11;22;2018;3 mal die Woche;Handy und Gespräche;1-3 times a week;auditory, visual, people
+12;23;2017;zweimal die Woche;Gespräche, laute Geräusche;1-3 times a week;people, auditory
+13;26;2013;4/7 Tagen;ungewöhnliche Situationen, bedeutende Neuigkeiten;4 times a week;situations, news
+14;25;2014;selten, etwa 1mal pro Monat;Unterhalten mit anderen;1-2 times a month;people
+15;20;2019;~1mal im Monat;Handy, Essen;1-2 times a month;visual, auditory, eating
+16;29;2011;manchmal;laute Geräusche, Katzen, Essen, Anrufe;occasionally;auditory, movements, eating
+17;29;2011;~1x/Woche;Audioinhalte :D;1-3 times a week;auditory
+18;26;2014;einmal im Monat;Musik, blinkende Lichter;1-2 times a month;auditory

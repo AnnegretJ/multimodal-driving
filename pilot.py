@@ -17,7 +17,7 @@ xpy.control.initialize(exp)
 # functions for items
 def auditory(q): # pass dictionary with all information (q_results)
     start = xpy.io.TextInput(message="Drücke 'Enter' auf der Tastatur um das Video zu starten")
-    if start.get() == "":
+    if type(start.get()) == str:
         # play exam video
         data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
         data.preload()
@@ -30,11 +30,11 @@ def auditory(q): # pass dictionary with all information (q_results)
         data.wait_end()
         data.stop()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
-    if confirm.get() == "":
+    if type(confirm.get()) == str:
         e_results = exam_q(q)
         d_results = distract_q(q)
         sub = xpy.io.TextInput(message="Weiter (Drücke 'Enter')")
-        if sub.get() == "":
+        if type(sub.get()) == str:
             correct_results = []
             for item in [q["Answer A"][1],q["Answer B"][1],q["Answer C"][1]]:
                 if item == "TRUE":
@@ -63,7 +63,7 @@ def auditory(q): # pass dictionary with all information (q_results)
 
 def visual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
-    if start.get() == "":
+    if type(start.get()) == str:
         data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
         data.preload()
         data.play()
@@ -86,11 +86,11 @@ def visual(q):
         data.stop()
         cv2.destroyAllWindows()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
-    if confirm.get() == "":
+    if type(confirm.get()) == str:
         e_results = exam_q(q)
         d_results = distract_q(q)
         sub = xpy.io.TextInput("Weiter (Drücke 'Enter')")
-        if sub.get() == "":
+        if type(sub.get()) == str:
             correct_results = []
             for item in [q["Answer A"][1],q["Answer B"][1],q["Answer C"][1]]:
                 if item == "TRUE":
@@ -109,8 +109,8 @@ def visual(q):
                     correct_results.append(True)
                 elif item == "FALSE":
                     correct_results.append(False)
-                elif item == "None":
-                    correct_results.append(None)
+                # elif item == "None":
+                #     correct_results.append(None)
             if d_results == correct_results:
                 q["ConditionCorrectness"] = True
             else:
@@ -119,7 +119,7 @@ def visual(q):
 
 def audiovisual(q):
     start = xpy.io.TextInput(message="Video starten (Drücke 'Enter')")
-    if start.get() == "":
+    if type(start.get()) == str:
         data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
         sound = xpy.stimuli.Audio("study_1-data/"+q["ConditionFileAuditory"])
         sound.preload()
@@ -145,11 +145,11 @@ def audiovisual(q):
         data.stop()
         cv2.destroyAllWindows()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter'")
-    if confirm.get() == "":
+    if type(confirm.get()) == str:
         e_results = exam_q(q)
         d_results = distract_q(q)
         sub = xpy.io.TextInput(message="Weiter (Drücke 'Enter')")
-        if sub.get() == "":
+        if type(sub.get()) == str:
             correct_results = []
             for item in [q["Answer A"][1],q["Answer B"][1],q["Answer C"][1]]:
                 if item == "TRUE":
@@ -179,7 +179,7 @@ def audiovisual(q):
 def baseline(q): # without distractions
     # create item for exam question video
     start = xpy.io.TextInput(message="Drücke 'Enter' auf der Tastatur um das Video zu starten")
-    if start.get() == "":
+    if type(start.get()) == str:
         # play exam video
         data = xpy.stimuli.Video("study_1-data/"+q["Video"],backend="mediadecoder")
         data.preload()
@@ -188,10 +188,10 @@ def baseline(q): # without distractions
         data.wait_end()
         data.stop()
     confirm = xpy.io.TextInput(message="Ich bestätige, dass ich das gesamte Video angesehen habe. (Drücke 'Enter')")
-    if confirm.get() == "":
+    if type(confirm.get()) == str:
         results = exam_q(q)
         sub = xpy.io.TextInput("Weiter (Drücke 'Enter')")
-        if sub.get() == "":
+        if type(sub.get()) == str:
             correct_results = []
             for item in [q["Answer A"][1],q["Answer B"][1],q["Answer C"][1]]:
                 if item == "TRUE":
@@ -250,13 +250,13 @@ def distract_q(data): # for answering the distraction questions
         out.append(True)
     else:
         out.append(False)
-    if data["DistractionAnswer C"][1] != "NONE":
-        if "3" in reply:
-            out.append(True)
-        else:
-            out.append(False)
+    # if data["DistractionAnswer C"][1] != "NONE":
+    if "3" in reply:
+        out.append(True)
     else:
-        out.append(None)
+        out.append(False)
+    # else:
+    #     out.append(None)
     return out
 
 
@@ -282,12 +282,11 @@ for item in res:
     result = random.sample(list(item),1) # only keep one of the items, so that no participant has the same question twice
     new.extend(result)
 distraction_order = random.sample(new,len(new))
-con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
-condition_values = random.sample(con,len(con)) # 6 without distraction, 7 with
+# con = [True,True,True,True,True,True,True,False,False,False,False,False,False]
+con = [True,True,True,True,True,False,False,False,False,False,False]
+condition_values = random.sample(con,len(con)) # 6 without distraction, 5 with
 condition_values = [False,True,False,True] + condition_values # four items (2 with 2 without distraction) for initialization
 # condition_values = [False,True] # for testing
-print(condition_values)
-print(len(distraction_order))
 order = random.sample([x for x,y in exam_questions.iterrows()],len(condition_values)) # randomize order of questions, just as many questions as there are condition values
 current_results = []
 for index in order:
@@ -318,11 +317,14 @@ for index in order:
     q_results["ConditionCorrectness"] = None
 
     # call functions for samples
-    if condition_value and condition == "auditory" and distraction_order != []:
+    if q_results["Condition"] == "auditory":
+    # if condition_value and condition == "auditory" and distraction_order != []:
         q_results = auditory(q_results)
-    elif condition_value and condition == "visual" and distraction_order != []:
+    elif q_results["Condition"] == "visual":
+    # elif condition_value and condition == "visual" and distraction_order != []:
         q_results = visual(q_results)
-    elif condition_value and condition == "audiovisual" and distraction_order != []:
+    elif q_results["Condition"] == "audiovisual":
+    # elif condition_value and condition == "audiovisual" and distraction_order != []:
         q_results = audiovisual(q_results)
     else: # when condition_value is False
         q_results = baseline(q_results)
@@ -331,12 +333,12 @@ for index in order:
 
 # button when Done
 done = xpy.io.TextInput("Drücken Sie 'Enter', wenn Sie fertig sind.")
-if done.get() == "":
+if type(done.get()) == str:
     for item in current_results[4:]: # ignore the first four items as they are for initialization
         params = (item["Video"],item["Question"],item["Condition"],item["Correctness"],item["ConditionQuestion"],item["ConditionCorrectness"])
         cursor.execute("INSERT INTO Study1 VALUES (?, ?, ?, ?, ?, ?)", params)
     submit = xpy.io.TextInput("Drücken Sie 'Enter' um die Studie zu beenden.")
-    if submit.get() == "":
+    if type(submit.get()) == str:
         connection.commit()
         connection.close()
         xpy.control.end()

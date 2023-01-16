@@ -46,8 +46,8 @@ def per_video(data): # sort data per video
 
 def per_distraction_type(data): # sort by wether the distraction was about the weather or a restaurant
     distraction_type = dict()
-    distraction_type["Restaurant"] = data.loc[data["ConditionQuestion"].str.contains("Restaurant")] # all questions that contain the word "Restaurant"
-    distraction_type["Wetter"] = data.loc[~data["ConditionQuestion"].str.contains("Restaurant")] # all questions that do not contain the word "Restaurant"
+    distraction_type["Restaurant"] = data.loc[data["ConditionQuestion"].str.contains("Restaurant",na=False)] # all questions that contain the word "Restaurant"
+    distraction_type["Wetter"] = data.loc[~data["ConditionQuestion"].str.contains("Restaurant",na=False)] # all questions that do not contain the word "Restaurant"
     return distraction_type # return dictionary of distraction-type (restaurant or weather) mapped with the according part of the dataframe
 
 def by_age(data): # sort by participant age

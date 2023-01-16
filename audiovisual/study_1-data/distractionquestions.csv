@@ -1,0 +1,15 @@
+﻿Filename Auditory;Filename Visual;Question;Answer A;Correctness A;Answer B;Correctness B;Answer C;Correctness C
+distraction_audio/wetter_heute.wav;distraction_video/wetter_heute.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;TRUE;Morgen;FALSE;Weiß ich nicht;FALSE
+distraction_audio/wetter_morgen.wav;distraction_video/wetter_morgen.mp4;Für welchen Tag wurde das Wetter angegeben?;Heute;FALSE;Morgen;TRUE;Weiß ich nicht;FALSE
+distraction_audio/wetter_bewoelkt.wav;distraction_video/wetter_bewoelkt.mp4;Was für ein Wetter wurde vorhergesagt?;Bewölkt;TRUE;Regen;FALSE;Weiß ich nicht;FALSE
+distraction_audio/wetter_regen.wav;distraction_video/wetter_regen.mp4;Was für ein Wetter wurde vorhergesagt?;Bewölkt;FALSE;Regen;TRUE;Weiß ich nicht;FALSE
+distraction_audio/wetter_ueber_20.wav;distraction_video/wetter_ueber_20.mp4;Wird die Temperatur über 20°C?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE
+distraction_audio/wetter_unter_20.wav;distraction_video/wetter_unter_20.mp4;Wird die Temperatur über 20°C?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_italienisch.wav;distraction_video/restaurant_italienisch.mp4;Welche Art von Restaurant wurde vorgeschlagen?;Italienisch;TRUE;Griechisch;FALSE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_griechisch.wav;distraction_video/restaurant_griechisch.mp4;Welche Art von Restaurant wurde vorgeschlagen?;Italienisch;FALSE;Griechisch;TRUE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_frühstück.wav;distraction_video/restaurant_frühstück.mp4;Zu welcher Mahlzeit wurde ein Besuch im Restaurant vorgeschlagen?;Frühstück;TRUE;Abendessen;FALSE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_abendessen.wav;distraction_video/restaurant_abendessen.mp4;Zu welcher Mahlzeit wurde ein Besuch im Restaurant vorgeschlagen?;Frühstück;FALSE;Abendessen;TRUE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_karte.wav;distraction_video/restaurant_karte.mp4;Kann man in dem Restaurant mit Karte zahlen?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_keine_karte.wav;distraction_video/restaurant_keine_karte.mp4;Kann man in dem Restaurant mit Karte zahlen?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_lieferservice.wav;distraction_video/restaurant_lieferservice.mp4;Hat das Restaurant einen Lieferservice?;Ja;TRUE;Nein;FALSE;Weiß ich nicht;FALSE
+distraction_audio/restaurant_kein_lieferservice.wav;distraction_video/restaurant_kein_lieferservice.mp4;Hat das Restaurant einen Lieferservice?;Ja;FALSE;Nein;TRUE;Weiß ich nicht;FALSE

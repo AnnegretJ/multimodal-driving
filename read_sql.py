@@ -1,34 +1,38 @@
 import sqlite3
 import pandas as pd
+from collections import defaultdict
 
-def per_participant(data): # sort data per participant
-    participants = dict()
-    for value in data["Subject Number"]:
-        if value in participants.keys():
-            continue
-        participants[value] = data.loc[data["Subject Number"] == value]
+def per_participant(discard,data): # sort data per participant
+    participants = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard:
+            continue # skip if Video was always answered incorrectly
+        else:
+            value = line["SubjectNumber"]
+            participants[value].append(line)
     return participants # return dictionary of subject number mapped with the according part of the dataframe
-    # participants = dict()
-    # for i in range(1,31): # 30 participants, starting with number 1
-    #     participants[i] = data.loc[data["Subject Number"] == str(i)]
-    # return participants 
 
-def per_condition(data): # sort data per condition
-    condition = dict()
-    condition["auditory"] = data.loc[data['Condition'] == "auditory"] # get all rows with auditory distraction
-    condition["visual"] = data.loc[data['Condition'] == "visual"]
-    condition["audiovisual"] = data.loc[data['Condition'] == "audiovisual"]
-    condition["no_con"] = data.loc[data['Condition'] == ""]
+def per_condition(discard,data): # sort data per condition
+    condition = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard:
+            continue
+        if line["Condition"] == "auditory":
+            condition["auditory"].append(line)
+        elif line["Condition"] == "visual":
+            condition["visual"].append(line)
+        else:
+            condition["no_con"].append(line)
     return condition # return dictionary of condition mapped with the according part of the dataframe
 
 def per_video(data): # sort data per video
     video = dict()
-    video["Yqe62JAmjMI_7_31.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_7_31.mp4"]
+    #video["Yqe62JAmjMI_7_31.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_7_31.mp4"] # all false
     video["Yqe62JAmjMI_30_21.5.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_30_21.5.mp4"]
     video["Yqe62JAmjMI_31_21.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_31_21.mp4"]
     video["Yqe62JAmjMI_38_13.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_38_13.mp4"]
     video["Yqe62JAmjMI_43_21.5.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_43_21.5.mp4"]
-    video["Yqe62JAmjMI_53_50.5.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_53_50.5.mp4"]
+    #video["Yqe62JAmjMI_53_50.5.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_53_50.5.mp4"] # all false
     video["Yqe62JAmjMI_59_08.5.mp4"] = data.loc[data['Video'] == "videos/Yqe62JAmjMI_59_08.5.mp4"]
     video["9xY9S3LV69k_9_45.5.mp4"] = data.loc[data['Video'] == "videos/9xY9S3LV69k_9_45.5.mp4"]
     video["9xY9S3LV69k_12_29.mp4"] = data.loc[data['Video'] == "videos/9xY9S3LV69k_12_29.mp4"]
@@ -36,58 +40,71 @@ def per_video(data): # sort data per video
     video["9xY9S3LV69k_26_29.mp4"] = data.loc[data['Video'] == "videos/9xY9S3LV69k_26_29.mp4"]
     video["GYhPr8RyvZU_3_03.5.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_3_03.5.mp4"]
     video["GYhPr8RyvZU_14_00.5.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_14_00.5.mp4"]
-    video["GYhPr8RyvZU_16_34.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_16_34.mp4"]
-    video["GYhPr8RyvZU_19_37.5.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_19_37.5.mp4"]
+    #video["GYhPr8RyvZU_16_34.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_16_34.mp4"] # all false
+    #video["GYhPr8RyvZU_19_37.5.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_19_37.5.mp4"] # all false
     video["GYhPr8RyvZU_21_32.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_21_32.mp4"]
     video["GYhPr8RyvZU_23_14.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_23_14.mp4"]
     video["GYhPr8RyvZU_1_03_56.5.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_1_03_56.5.mp4"]
     video["GYhPr8RyvZU_1_07_02.mp4"] = data.loc[data['Video'] == "videos/GYhPr8RyvZU_1_07_02.mp4"]
     return video # return dictionary of videos mapped with the according part of the dataframe
 
-def per_distraction_type(data): # sort by wether the distraction was about the weather or a restaurant
-    distraction_type = dict()
-    distraction_type["Restaurant"] = data.loc[data["ConditionQuestion"].str.contains("Restaurant",na=False)] # all questions that contain the word "Restaurant"
-    distraction_type["Wetter"] = data.loc[~data["ConditionQuestion"].str.contains("Restaurant",na=False)] # all questions that do not contain the word "Restaurant"
+def per_distraction_type(discard,data): # sort by wether the distraction was about the weather or a restaurant
+    distraction_type = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard or type(line["ConditionQuestion"]) != str:
+            continue 
+        if "Restaurant" in line["ConditionQuestion"]:
+            distraction_type["Restaurant"].append(line)
+        else:
+            distraction_type["Wetter"].append(line)
     return distraction_type # return dictionary of distraction-type (restaurant or weather) mapped with the according part of the dataframe
 
-def by_age(data): # sort by participant age
-    age = dict()
-    for value in data["Age"]:
-        if value in age.keys(): # if current value has already been sorted by
+def by_age(discard,data): # sort by participant age
+    age = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard: # if current value has already been sorted by
             continue
-        age[value] = data.loc[data["Age"] == value]
+        else:
+            value = line["Age"]
+            age[value].append(line)
     return age
 
-def by_experience(data): # sort by driving experience
-    experience = dict()
-    for value in data["Experience"]:
-        if value in experience.keys():
+def by_experience(discard,data): # sort by driving experience
+    experience = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard:
             continue
-        experience[value] = data.loc[data["Experience"] == value]
+        experience[line["Experience"]].append(line)
+    #     for value in line["Experience"]:
+    #         print(line["Experience"])
+    #         experience[value].append(line)
+    # print(experience)
     return experience
 
-def by_year(data): # sort by year when license has been received
-    year = dict()
-    for value in data["Year"]:
-        if value in year.keys():
+def by_year(discard,data): # sort by year when license has been received
+    year = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard:
             continue
-        year[value] = data.loc[data["Year"] == value]
+        value = line["Year"]
+        year[value].append(line)
     return year
 
-def common_distraction(data): # sort by common distractions
-    distraction = dict()
-    for value in data["Distractions"]:
-        if value in distraction.keys():
+def common_distraction(discard,data): # sort by common distractions
+    distraction = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard or type(line["Distractions"]) != str:
             continue
-        distraction[value] = data.loc[data["Distractions"] == value]
+        for value in line["Distractions"].split(","):
+            distraction[value].append(line)
     return distraction
 
-def get_distraction_item(data): # sort by individual distraction item (independent of distraction type)
-    dis_item = dict()
-    for value in data["ConditionQuestion"]:
-        if value in dis_item.keys():
+def get_distraction_item(discard,data): # sort by individual distraction item (independent of distraction type)
+    dis_item = defaultdict(list)
+    for index,line in data.iterrows():
+        if line["Video"] in discard:
             continue
-        dis_item[value] = data.loc[data["ConditionQuestion"] == value]
+        dis_item[line["ConditionQuestion"]].append(line)
     return dis_item
 
 if __name__ == "__main__":
@@ -100,19 +117,17 @@ if __name__ == "__main__":
     year = []
     distractions = []
     experience = []
-    print(list(data["ConditionCorrectness"]))
-    print(list(data["Correctness"]))
-    print(len(list(data["Condition"])))
-    print(list(data["ConditionQuestion"]))
-    for i in range(20): # 30 participants
+    for i in range(20): # 20 participants
         subject_number.extend([additional_data.loc[i]["Subject Number"]]*11)
         age.extend([additional_data.loc[i]["Alter"]]*11)
         year.extend([additional_data.loc[i]["Jahr"]]*11)
         distractions.extend([additional_data.loc[i]["Ablenkungen transcription"]]*11)
         experience.extend([additional_data.loc[i]["Erfahrung transcription"]]*11)
-    # print(type({"Subject Number":subject_number}))
-    data.assign({"Subject Number":subject_number})
-    data.assign({"Age":age})
-    data.assign({"Year":year})
-    data.assign({"Distractions":distractions})
-    data.assign({"Experience":experience})
+    # print(len({"Subject Number":subject_number}))
+    # print(subject_number)
+    # print(data)
+    data.assign(SubjectNumber=subject_number)
+    data.assign(Age=age)
+    data.assign(Year=year)
+    data.assign(Distractions=distractions)
+    data.assign(Experience=experience)
